@@ -49,14 +49,14 @@ footer{border-top:1px solid var(--line);padding:22px;text-align:center;color:var
   <section class="hero">
     <div class="eyebrow" id="eyebrow">Fayjane Madina</div>
     <h2 id="heroTitle">আপনার প্রয়োজনীয় পণ্য, এক জায়গায়।</h2>
-    <p id="heroText">ক্যাটাগরি অনুযায়ী পণ্য দেখুন, সহজে সার্চ করুন এবং সর্বশেষ মূল্য জেনে নিন। পণ্যের মূল্য দেখতে অ্যাকাউন্টে লগইন করুন।</p>
+    <p id="heroText">ক্যাটাগরি অনুযায়ী পণ্য দেখুন, সহজে সার্চ করুন এবং সর্বশেষ মূল্য জেনে নিন। লগইন ছাড়াই পণ্য ও দাম দেখুন।</p>
     <div class="adminbar"><button id="heroLogin">লগইন করে পণ্য দেখুন</button><button class="secondary hidden" id="adminAdd">+ নতুন পণ্য</button><button class="secondary hidden" id="adminCats">ক্যাটাগরি পরিচালনা</button></div>
   </section>
   <div class="toolbar">
     <input id="search" placeholder="পণ্যের নাম দিয়ে খুঁজুন / Search products">
     <select id="categoryFilter"><option value="">সব ক্যাটাগরি / All categories</option></select>
   </div>
-  <div class="section-head"><div><h3 id="productsTitle">পণ্যসমূহ</h3><div class="muted" id="productsSubtitle">লগইন করলে পণ্যের মূল্য দেখা যাবে</div></div><div class="small" id="count"></div></div>
+  <div class="section-head"><div><h3 id="productsTitle">পণ্যসমূহ</h3><div class="muted" id="productsSubtitle">সবার জন্য পণ্য ও দাম উন্মুক্ত</div></div><div class="small" id="count"></div></div>
   <div class="chips" id="chips"></div>
   <div id="products" class="grid"></div>
   <div id="status" class="notice hidden"></div>
@@ -64,8 +64,8 @@ footer{border-top:1px solid var(--line);padding:22px;text-align:center;color:var
 <footer>© <span id="year"></span> FM House · Fayjane Madina</footer>
 
 <div class="overlay" id="authModal"><div class="modal">
-  <h3 id="authTitle">FM House-এ লগইন</h3><p class="muted" id="authHelp">পণ্যের দাম দেখতে লগইন করুন অথবা অ্যাকাউন্ট খুলুন।</p>
-  <div class="notice" id="authNotice">এই ডেমোটি Firebase সেটআপের পরে অনলাইন অ্যাপ হিসেবে কাজ করবে।</div>
+  <h3 id="authTitle">FM House-এ লগইন</h3><p class="muted" id="authHelp">পণ্য দেখতে লগইন লাগবে না। Admin হলে লগইন করুন।</p>
+  <div class="notice" id="authNotice">Admin লগইন করুন। সাধারণ ক্রেতাদের লগইন প্রয়োজন নেই।</div>
   <label>Email</label><input id="authEmail" type="email" autocomplete="username" placeholder="you@example.com">
   <label id="passwordLabel">পাসওয়ার্ড / Password</label><input id="authPassword" type="password" autocomplete="current-password" placeholder="••••••••">
   <div class="modal-actions"><button class="secondary" id="authCancel">বন্ধ করুন</button><button class="secondary" id="toggleRegister">অ্যাকাউন্ট খুলুন</button><button id="authSubmit">লগইন</button></div>
@@ -100,17 +100,15 @@ import { getFirestore, collection, doc, addDoc, updateDoc, deleteDoc, getDocs, o
 import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-storage.js";
 
 // Add your Firebase web config here after creating a Firebase project.
- const firebaseConfig = {
+const firebaseConfig = {
   apiKey: "AIzaSyDLwFF5wM9nBCcxgfKG2MbU1E_S6yGKbOs",
   authDomain: "fm-house-catalog.firebaseapp.com",
-  
-projectId: "fm-house-catalog",
+  projectId: "fm-house-catalog",
   storageBucket: "fm-house-catalog.firebasestorage.app",
   messagingSenderId: "164773155034",
   appId: "1:164773155034:web:1dd6b27d7c8a51acd995e3",
   measurementId: "G-VCJELFMRHY"
 };
- 
 
 const configured = firebaseConfig.apiKey !== "PASTE_API_KEY";
 let app, auth, db, storage;
@@ -135,7 +133,7 @@ function showModal(id){$(id).classList.add("open")}
 function hideModal(id){$(id).classList.remove("open")}
 function showStatus(msg){$("status").textContent=msg;$("status").classList.remove("hidden")}
 function hideStatus(){$("status").classList.add("hidden")}
-function setLang(){document.documentElement.lang=lang;$("langBtn").textContent=lang==="bn"?"English":"বাংলা";$("loginBtn").textContent=currentUser?t("অ্যাকাউন্ট","Account"):t("লগইন","Login");$("logoutBtn").classList.toggle("hidden",!currentUser);$("loginBtn").classList.toggle("hidden",!!currentUser);$("eyebrow").textContent="Fayjane Madina";$("heroTitle").textContent=t("আপনার প্রয়োজনীয় পণ্য, এক জায়গায়।","Products you need, all in one place.");$("heroText").textContent=t("ক্যাটাগরি অনুযায়ী পণ্য দেখুন, সহজে সার্চ করুন এবং সর্বশেষ মূল্য জেনে নিন। পণ্যের মূল্য দেখতে অ্যাকাউন্টে লগইন করুন.","Browse products by category, search easily, and check current prices. Log in to view prices.");$("heroLogin").textContent=currentUser?t("পণ্য দেখুন","Browse products"):t("লগইন করে পণ্য দেখুন","Log in to view products");$("adminAdd").textContent=t("+ নতুন পণ্য","+ Add product");$("adminCats").textContent=t("ক্যাটাগরি পরিচালনা","Manage categories");$("productsTitle").textContent=t("পণ্যসমূহ","Products");$("productsSubtitle").textContent=currentUser?t("সর্বশেষ পণ্য ও মূল্য","Latest products and prices"):t("লগইন করলে পণ্যের মূল্য দেখা যাবে","Log in to view product prices");$("search").placeholder=t("পণ্যের নাম দিয়ে খুঁজুন","Search products");$("authTitle").textContent=t("FM House-এ লগইন","Log in to FM House");$("authHelp").textContent=t("পণ্যের দাম দেখতে লগইন করুন অথবা অ্যাকাউন্ট খুলুন।","Log in or create an account to view prices.");$("authCancel").textContent=t("বন্ধ করুন","Close");$("toggleRegister").textContent=registerMode?t("লগইনে ফিরুন","Back to login"):t("অ্যাকাউন্ট খুলুন","Create account");$("authSubmit").textContent=registerMode?t("অ্যাকাউন্ট খুলুন","Create account"):t("লগইন","Login");$("passwordLabel").textContent=t("পাসওয়ার্ড","Password");renderCategories();renderProducts()}
+function setLang(){document.documentElement.lang=lang;$("langBtn").textContent=lang==="bn"?"English":"বাংলা";$("loginBtn").textContent=currentUser?t("অ্যাকাউন্ট","Account"):t("লগইন","Login");$("logoutBtn").classList.toggle("hidden",!currentUser);$("loginBtn").classList.toggle("hidden",!!currentUser);$("eyebrow").textContent="Fayjane Madina";$("heroTitle").textContent=t("আপনার প্রয়োজনীয় পণ্য, এক জায়গায়।","Products you need, all in one place.");$("heroText").textContent=t("ক্যাটাগরি অনুযায়ী পণ্য দেখুন, সহজে সার্চ করুন এবং সর্বশেষ মূল্য জেনে নিন। পণ্যের মূল্য দেখতে অ্যাকাউন্টে লগইন করুন.","Browse products by category, search easily, and check current prices. Log in to view prices.");$("heroLogin").textContent=currentUser?t("পণ্য দেখুন","Browse products"):t("লগইন করে পণ্য দেখুন","Log in to view products");$("adminAdd").textContent=t("+ নতুন পণ্য","+ Add product");$("adminCats").textContent=t("ক্যাটাগরি পরিচালনা","Manage categories");$("productsTitle").textContent=t("পণ্যসমূহ","Products");$("productsSubtitle").textContent=currentUser?t("সর্বশেষ পণ্য ও মূল্য","Latest products and prices"):t("সবার জন্য পণ্য ও দাম উন্মুক্ত","Products and prices are public");$("search").placeholder=t("পণ্যের নাম দিয়ে খুঁজুন","Search products");$("authTitle").textContent=t("FM House-এ লগইন","Log in to FM House");$("authHelp").textContent=t("পণ্য দেখতে লগইন লাগবে না। Admin হলে লগইন করুন।","Visitors can browse freely. Admins can log in to manage products.");$("authCancel").textContent=t("বন্ধ করুন","Close");$("toggleRegister").textContent=registerMode?t("লগইনে ফিরুন","Back to login"):t("অ্যাকাউন্ট খুলুন","Create account");$("authSubmit").textContent=registerMode?t("অ্যাকাউন্ট খুলুন","Create account"):t("লগইন","Login");$("passwordLabel").textContent=t("পাসওয়ার্ড","Password");renderCategories();renderProducts()}
 function categoryName(c){return lang==="bn"?(c.nameBn||c.nameEn):(c.nameEn||c.nameBn)}
 function productName(p){return lang==="bn"?(p.nameBn||p.nameEn):(p.nameEn||p.nameBn)}
 function renderCategories(){
@@ -150,13 +148,15 @@ function renderProducts(){
  const list=products.filter(p=>(!cat||p.categoryId===cat)&&(!term||[p.nameBn,p.nameEn,p.description].join(" ").toLowerCase().includes(term)));
  $("count").textContent=String(list.length);
  $("products").innerHTML="";
- if(!currentUser){$("products").innerHTML=`<div class="empty" style="grid-column:1/-1"><div style="font-size:2rem">🔐</div><h3>${t("পণ্যের তালিকা ও দাম দেখতে লগইন করুন","Log in to see products and prices")}</h3><button id="emptyLogin">${t("লগইন","Log in")}</button></div>`;$("emptyLogin").onclick=()=>showModal("authModal");return}
- if(!list.length){$("products").innerHTML=`<div class="empty" style="grid-column:1/-1">${t("কোনো পণ্য পাওয়া যায়নি","No products found")}</div>`;return}
+ if(!list.length){
+   $("products").innerHTML=`<div class="empty" style="grid-column:1/-1">${t("এখনো কোনো পণ্য যোগ করা হয়নি অথবা খুঁজে পাওয়া যায়নি।","No products have been added yet, or no matches were found.")}</div>`;
+   return;
+ }
  list.forEach(p=>{
   const catObj=categories.find(c=>c.id===p.categoryId);
   const card=document.createElement("article");card.className="product";
   const media=p.imageUrl?`<img src="${escapeAttr(p.imageUrl)}" alt="${escapeAttr(productName(p))}" loading="lazy">`:`<div class="placeholder">FM</div>`;
-  card.innerHTML=`${media}<div class="product-body"><span class="category-label">${escapeHtml(catObj?categoryName(catObj):(p.categoryName||t("সাধারণ","General")))}</span><h4>${escapeHtml(productName(p)||"—")}</h4><div class="desc">${escapeHtml(p.description||"")}</div><div class="price">${money(p.price)}</div>${isAdmin?`<div class="product-admin-actions"><button class="secondary edit">এডিট</button><button class="danger delete">ডিলিট</button></div>`:""}</div>`;
+  card.innerHTML=`${media}<div class="product-body"><span class="category-label">${escapeHtml(catObj?categoryName(catObj):(p.categoryName||t("সাধারণ","General")))}</span><h4>${escapeHtml(productName(p)||"—")}</h4><div class="desc">${escapeHtml(p.description||"")}</div><div class="price">${money(p.price)}</div>${isAdmin?`<div class="product-admin-actions"><button class="secondary edit">${t("এডিট","Edit")}</button><button class="danger delete">${t("ডিলিট","Delete")}</button></div>`:""}</div>`;
   if(isAdmin){card.querySelector(".edit").onclick=()=>openProductEditor(p);card.querySelector(".delete").onclick=()=>removeProduct(p)}
   $("products").appendChild(card);
  });
@@ -169,11 +169,18 @@ async function startListeners(){
  unsubCats=onSnapshot(query(collection(db,"categories"),orderBy("nameEn")),snap=>{categories=snap.docs.map(d=>({id:d.id,...d.data()}));renderCategories();renderProducts()},e=>showStatus("Category read error: "+e.message));
  unsubProducts=onSnapshot(query(collection(db,"products"),orderBy("createdAt","desc")),snap=>{products=snap.docs.map(d=>({id:d.id,...d.data()}));renderProducts()},e=>showStatus("Product read error: "+e.message));
 }
+const ADMIN_EMAILS = [
+ "samiulislam88598@gmail.com",
+ "afid5354@gmail.com",
+ "tasnimmahi88598@gmail.com"
+];
 async function refreshRole(user){
- currentUser=user;isAdmin=false;
- if(user){try{const token=await user.getIdTokenResult(true);isAdmin=token.claims.admin===true}catch(e){console.warn(e)}}
- $("adminAdd").classList.toggle("hidden",!isAdmin);$("adminCats").classList.toggle("hidden",!isAdmin);
- setLang();await startListeners();
+ currentUser=user;
+ isAdmin=!!user && ADMIN_EMAILS.includes((user.email||"").toLowerCase());
+ $("adminAdd").classList.toggle("hidden",!isAdmin);
+ $("adminCats").classList.toggle("hidden",!isAdmin);
+ setLang();
+ await startListeners();
 }
 function openProductEditor(p=null){
  if(!isAdmin){showStatus(t("শুধু Admin পণ্য পরিবর্তন করতে পারবে।","Only admins can manage products."));return}
