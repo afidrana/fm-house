@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#101010">
+<title>FM House | Fayjane Madina</title>
+<style>
+:root{--bg:#101010;--panel:#191919;--panel2:#222;--text:#f5f2e9;--muted:#aaa;--gold:#d6b36a;--line:#333;--danger:#e36b6b}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+button,input,select,textarea{font:inherit}button{cursor:pointer;border:0;border-radius:10px;padding:11px 15px;background:var(--gold);color:#15120b;font-weight:700}
+button.secondary{background:#2b2b2b;color:var(--text);border:1px solid var(--line)}button.danger{background:#4a2020;color:#ffdede}
+input,select,textarea{width:100%;padding:12px;border-radius:10px;border:1px solid var(--line);background:#101010;color:var(--text);outline:none}
+input:focus,select:focus,textarea:focus{border-color:var(--gold)}label{display:block;font-size:.9rem;color:var(--muted);margin:12px 0 6px}
+.topbar{position:sticky;top:0;z-index:5;background:#121212ed;backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav{max-width:1180px;margin:auto;padding:14px 20px;display:flex;align-items:center;gap:14px;justify-content:space-between}
+.brand{display:flex;align-items:center;gap:12px;min-width:0}.logo{width:42px;height:42px;border:1px solid #6f5a2d;color:var(--gold);border-radius:12px;display:grid;place-items:center;font-weight:900;letter-spacing:-1px}
+.brand h1{font-size:1.05rem;margin:0}.brand p{font-size:.75rem;color:var(--muted);margin:3px 0 0}
+.actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.actions button{padding:9px 12px}
+main{max-width:1180px;margin:0 auto;padding:26px 20px 60px}
+.hero{border:1px solid #4c3e22;background:radial-gradient(ellipse at top right,#3b2e16 0,transparent 55%),linear-gradient(135deg,#1a1a1a,#111);border-radius:22px;padding:clamp(22px,5vw,46px);margin-bottom:22px}
+.eyebrow{color:var(--gold);text-transform:uppercase;letter-spacing:.16em;font-size:.75rem;font-weight:800}.hero h2{font-size:clamp(2rem,5vw,3.3rem);line-height:1.08;margin:12px 0}.hero p{max-width:620px;color:#c5c1b7;line-height:1.65;margin:0 0 20px}
+.toolbar{display:grid;grid-template-columns:minmax(200px,1fr) minmax(160px,240px);gap:12px;margin:20px 0}
+.chips{display:flex;gap:8px;overflow:auto;padding:2px 0 12px}.chip{white-space:nowrap;background:#202020;border:1px solid var(--line);color:var(--text);padding:9px 13px;border-radius:99px}.chip.active{background:var(--gold);color:#15120b;border-color:var(--gold)}
+.section-head{display:flex;align-items:end;justify-content:space-between;gap:10px;margin:24px 0 14px}.section-head h3{margin:0;font-size:1.3rem}.muted{color:var(--muted);font-size:.9rem}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.product{background:var(--panel);border:1px solid var(--line);border-radius:16px;overflow:hidden;min-width:0}
+.product img{width:100%;aspect-ratio:1/1;object-fit:cover;background:#252525;display:block}.placeholder{aspect-ratio:1/1;display:grid;place-items:center;background:linear-gradient(135deg,#262626,#161616);color:#8a7549;font-size:2.2rem}
+.product-body{padding:13px}.product h4{margin:0 0 7px;font-size:1rem;overflow-wrap:anywhere}.product .desc{font-size:.83rem;line-height:1.45;color:var(--muted);min-height:2.4em}.price{font-size:1.2rem;color:var(--gold);font-weight:800;margin:12px 0 0}.category-label{display:inline-block;border:1px solid #4b402a;border-radius:6px;padding:4px 7px;font-size:.7rem;color:#ddc78e;margin-bottom:9px}
+.empty{padding:36px 15px;border:1px dashed var(--line);border-radius:14px;text-align:center;color:var(--muted)}
+footer{border-top:1px solid var(--line);padding:22px;text-align:center;color:var(--muted);font-size:.82rem}
+.overlay{position:fixed;inset:0;z-index:20;background:#000b;display:none;align-items:center;justify-content:center;padding:16px}.overlay.open{display:flex}.modal{width:min(100%,500px);max-height:90vh;overflow:auto;background:#191919;border:1px solid #48402d;border-radius:18px;padding:22px}.modal h3{margin:0 0 8px}.modal-actions{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap;margin-top:18px}
+.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:0 12px}.span2{grid-column:1/-1}.notice{margin:12px 0;padding:11px 13px;border-radius:10px;background:#29251a;color:#e6d5a6;font-size:.88rem;white-space:pre-wrap}.hidden{display:none!important}.adminbar{display:flex;gap:8px;flex-wrap:wrap}
+.small{font-size:.8rem;color:var(--muted)}.product-admin-actions{display:flex;gap:6px;margin-top:10px}.product-admin-actions button{flex:1;padding:8px;font-size:.8rem}
+@media(max-width:900px){.grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:640px){.nav{padding:11px 14px}.brand p{display:none}.actions{gap:5px}.actions button{font-size:.8rem;padding:8px 9px}main{padding:18px 14px 42px}.toolbar{grid-template-columns:1fr}.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.product-body{padding:10px}.hero{border-radius:17px}.formgrid{grid-template-columns:1fr}.span2{grid-column:auto}}
+</style>
+</head>
+<body>
+<div class="topbar"><div class="nav">
+  <div class="brand"><div class="logo">FM</div><div><h1>FM House</h1><p>Fayjane Madina · Product Catalog</p></div></div>
+  <div class="actions">
+    <button class="secondary" id="langBtn">বাংলা / EN</button>
+    <button class="secondary" id="loginBtn">লগইন</button>
+    <button class="hidden" id="logoutBtn">লগআউট</button>
+  </div>
+</div></div>
+<main>
+  <section class="hero">
+    <div class="eyebrow" id="eyebrow">Fayjane Madina</div>
+    <h2 id="heroTitle">আপনার প্রয়োজনীয় পণ্য, এক জায়গায়।</h2>
+    <p id="heroText">ক্যাটাগরি অনুযায়ী পণ্য দেখুন, সহজে সার্চ করুন এবং সর্বশেষ মূল্য জেনে নিন। পণ্যের মূল্য দেখতে অ্যাকাউন্টে লগইন করুন।</p>
+    <div class="adminbar"><button id="heroLogin">লগইন করে পণ্য দেখুন</button><button class="secondary hidden" id="adminAdd">+ নতুন পণ্য</button><button class="secondary hidden" id="adminCats">ক্যাটাগরি পরিচালনা</button></div>
+  </section>
+  <div class="toolbar">
+    <input id="search" placeholder="পণ্যের নাম দিয়ে খুঁজুন / Search products">
+    <select id="categoryFilter"><option value="">সব ক্যাটাগরি / All categories</option></select>
+  </div>
+  <div class="section-head"><div><h3 id="productsTitle">পণ্যসমূহ</h3><div class="muted" id="productsSubtitle">লগইন করলে পণ্যের মূল্য দেখা যাবে</div></div><div class="small" id="count"></div></div>
+  <div class="chips" id="chips"></div>
+  <div id="products" class="grid"></div>
+  <div id="status" class="notice hidden"></div>
+</main>
+<footer>© <span id="year"></span> FM House · Fayjane Madina</footer>
+
+<div class="overlay" id="authModal"><div class="modal">
+  <h3 id="authTitle">FM House-এ লগইন</h3><p class="muted" id="authHelp">পণ্যের দাম দেখতে লগইন করুন অথবা অ্যাকাউন্ট খুলুন।</p>
+  <div class="notice" id="authNotice">এই ডেমোটি Firebase সেটআপের পরে অনলাইন অ্যাপ হিসেবে কাজ করবে।</div>
+  <label>Email</label><input id="authEmail" type="email" autocomplete="username" placeholder="you@example.com">
+  <label id="passwordLabel">পাসওয়ার্ড / Password</label><input id="authPassword" type="password" autocomplete="current-password" placeholder="••••••••">
+  <div class="modal-actions"><button class="secondary" id="authCancel">বন্ধ করুন</button><button class="secondary" id="toggleRegister">অ্যাকাউন্ট খুলুন</button><button id="authSubmit">লগইন</button></div>
+</div></div>
+
+<div class="overlay" id="productModal"><div class="modal">
+  <h3 id="productModalTitle">নতুন পণ্য</h3>
+  <div id="productNotice" class="notice hidden"></div>
+  <div class="formgrid">
+    <div><label>পণ্যের নাম (বাংলা)</label><input id="pNameBn"></div>
+    <div><label>Product name (English)</label><input id="pNameEn"></div>
+    <div><label>দাম / Price (৳)</label><input id="pPrice" type="number" min="0" step="0.01"></div>
+    <div><label>ক্যাটাগরি / Category</label><select id="pCategory"></select></div>
+    <div class="span2"><label>বিবরণ / Description</label><textarea id="pDescription" rows="2"></textarea></div>
+    <div class="span2"><label>পণ্যের ছবি / Product image</label><input id="pImage" type="file" accept="image/*"><div class="small">ছবি দিলে Firebase Storage-এ আপলোড হবে।</div></div>
+  </div>
+  <div class="modal-actions"><button class="secondary" id="productCancel">বাতিল</button><button id="productSave">সেভ করুন</button></div>
+</div></div>
+
+<div class="overlay" id="categoryModal"><div class="modal">
+  <h3>ক্যাটাগরি পরিচালনা / Manage categories</h3>
+  <label>নতুন ক্যাটাগরি (বাংলা)</label><input id="catBn" placeholder="যেমন: পোশাক">
+  <label>Category name (English)</label><input id="catEn" placeholder="e.g. Clothing">
+  <div class="modal-actions"><button class="secondary" id="categoryCancel">বন্ধ করুন</button><button id="categorySave">ক্যাটাগরি যোগ করুন</button></div>
+  <div id="categoryList" style="margin-top:16px"></div>
+</div></div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+import { getFirestore, collection, doc, addDoc, updateDoc, deleteDoc, getDocs, onSnapshot, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-storage.js";
+
+// Add your Firebase web config here after creating a Firebase project.
+const firebaseConfig = {
+  apiKey: "PASTE_API_KEY",
+  authDomain: "PASTE_PROJECT_ID.firebaseapp.com",
+  projectId: "PASTE_PROJECT_ID",
+  storageBucket: "PASTE_PROJECT_ID.appspot.com",
+  messagingSenderId: "PASTE_MESSAGING_SENDER_ID",
+  appId: "PASTE_APP_ID"
+};
+
+const configured = firebaseConfig.apiKey !== "PASTE_API_KEY";
+let app, auth, db, storage;
+if (configured) {
+  app = initializeApp(firebaseConfig);
+  auth = getAuth(app);
+  db = getFirestore(app);
+  storage = getStorage(app);
+}
+
+const $ = id => document.getElementById(id);
+let lang = localStorage.getItem("fm_lang") || "bn";
+let currentUser = null, isAdmin = false, registerMode = false, products = [], categories = [], editId = null, editImageUrl = "", unsubProducts = null, unsubCats = null;
+const sampleProducts = [
+  {id:"sample1",nameBn:"নমুনা পণ্য",nameEn:"Sample Product",price:250,categoryBn:"সাধারণ",categoryEn:"General",description:"Firebase সেটআপের পরে এখানে আপনার পণ্য দেখাবে।",imageUrl:""},
+  {id:"sample2",nameBn:"আরেকটি পণ্য",nameEn:"Another Product",price:480,categoryBn:"নতুন পণ্য",categoryEn:"New Arrivals",description:"এটি শুধু ডিজাইন দেখানোর জন্য নমুনা।",imageUrl:""}
+];
+const sampleCats = [{id:"sc1",nameBn:"সাধারণ",nameEn:"General"},{id:"sc2",nameBn:"নতুন পণ্য",nameEn:"New Arrivals"}];
+function t(bn,en){return lang==="bn"?bn:en}
+function money(n){return new Intl.NumberFormat(lang==="bn"?"bn-BD":"en-BD",{style:"currency",currency:"BDT",maximumFractionDigits:2}).format(Number(n||0))}
+function showModal(id){$(id).classList.add("open")}
+function hideModal(id){$(id).classList.remove("open")}
+function showStatus(msg){$("status").textContent=msg;$("status").classList.remove("hidden")}
+function hideStatus(){$("status").classList.add("hidden")}
+function setLang(){document.documentElement.lang=lang;$("langBtn").textContent=lang==="bn"?"English":"বাংলা";$("loginBtn").textContent=currentUser?t("অ্যাকাউন্ট","Account"):t("লগইন","Login");$("logoutBtn").classList.toggle("hidden",!currentUser);$("loginBtn").classList.toggle("hidden",!!currentUser);$("eyebrow").textContent="Fayjane Madina";$("heroTitle").textContent=t("আপনার প্রয়োজনীয় পণ্য, এক জায়গায়।","Products you need, all in one place.");$("heroText").textContent=t("ক্যাটাগরি অনুযায়ী পণ্য দেখুন, সহজে সার্চ করুন এবং সর্বশেষ মূল্য জেনে নিন। পণ্যের মূল্য দেখতে অ্যাকাউন্টে লগইন করুন.","Browse products by category, search easily, and check current prices. Log in to view prices.");$("heroLogin").textContent=currentUser?t("পণ্য দেখুন","Browse products"):t("লগইন করে পণ্য দেখুন","Log in to view products");$("adminAdd").textContent=t("+ নতুন পণ্য","+ Add product");$("adminCats").textContent=t("ক্যাটাগরি পরিচালনা","Manage categories");$("productsTitle").textContent=t("পণ্যসমূহ","Products");$("productsSubtitle").textContent=currentUser?t("সর্বশেষ পণ্য ও মূল্য","Latest products and prices"):t("লগইন করলে পণ্যের মূল্য দেখা যাবে","Log in to view product prices");$("search").placeholder=t("পণ্যের নাম দিয়ে খুঁজুন","Search products");$("authTitle").textContent=t("FM House-এ লগইন","Log in to FM House");$("authHelp").textContent=t("পণ্যের দাম দেখতে লগইন করুন অথবা অ্যাকাউন্ট খুলুন।","Log in or create an account to view prices.");$("authCancel").textContent=t("বন্ধ করুন","Close");$("toggleRegister").textContent=registerMode?t("লগইনে ফিরুন","Back to login"):t("অ্যাকাউন্ট খুলুন","Create account");$("authSubmit").textContent=registerMode?t("অ্যাকাউন্ট খুলুন","Create account"):t("লগইন","Login");$("passwordLabel").textContent=t("পাসওয়ার্ড","Password");renderCategories();renderProducts()}
+function categoryName(c){return lang==="bn"?(c.nameBn||c.nameEn):(c.nameEn||c.nameBn)}
+function productName(p){return lang==="bn"?(p.nameBn||p.nameEn):(p.nameEn||p.nameBn)}
+function renderCategories(){
+ const sel=$("categoryFilter"), old=sel.value; sel.innerHTML=`<option value="">${t("সব ক্যাটাগরি","All categories")}</option>`;
+ categories.forEach(c=>{const o=document.createElement("option");o.value=c.id;o.textContent=categoryName(c);sel.appendChild(o)}); if(categories.some(c=>c.id===old))sel.value=old;
+ $("chips").innerHTML="";const all=document.createElement("button");all.className="chip active";all.textContent=t("সব","All");all.onclick=()=>{sel.value="";renderProducts()};$("chips").appendChild(all);
+ categories.forEach(c=>{const b=document.createElement("button");b.className="chip";b.textContent=categoryName(c);b.onclick=()=>{sel.value=c.id;renderProducts();document.querySelectorAll(".chip").forEach(x=>x.classList.remove("active"));b.classList.add("active")};$("chips").appendChild(b)});
+ const psel=$("pCategory");psel.innerHTML="";categories.forEach(c=>{const o=document.createElement("option");o.value=c.id;o.textContent=categoryName(c);psel.appendChild(o)});
+}
+function renderProducts(){
+ const term=$("search").value.trim().toLowerCase(), cat=$("categoryFilter").value;
+ const list=products.filter(p=>(!cat||p.categoryId===cat)&&(!term||[p.nameBn,p.nameEn,p.description].join(" ").toLowerCase().includes(term)));
+ $("count").textContent=String(list.length);
+ $("products").innerHTML="";
+ if(!currentUser){$("products").innerHTML=`<div class="empty" style="grid-column:1/-1"><div style="font-size:2rem">🔐</div><h3>${t("পণ্যের তালিকা ও দাম দেখতে লগইন করুন","Log in to see products and prices")}</h3><button id="emptyLogin">${t("লগইন","Log in")}</button></div>`;$("emptyLogin").onclick=()=>showModal("authModal");return}
+ if(!list.length){$("products").innerHTML=`<div class="empty" style="grid-column:1/-1">${t("কোনো পণ্য পাওয়া যায়নি","No products found")}</div>`;return}
+ list.forEach(p=>{
+  const catObj=categories.find(c=>c.id===p.categoryId);
+  const card=document.createElement("article");card.className="product";
+  const media=p.imageUrl?`<img src="${escapeAttr(p.imageUrl)}" alt="${escapeAttr(productName(p))}" loading="lazy">`:`<div class="placeholder">FM</div>`;
+  card.innerHTML=`${media}<div class="product-body"><span class="category-label">${escapeHtml(catObj?categoryName(catObj):(p.categoryName||t("সাধারণ","General")))}</span><h4>${escapeHtml(productName(p)||"—")}</h4><div class="desc">${escapeHtml(p.description||"")}</div><div class="price">${money(p.price)}</div>${isAdmin?`<div class="product-admin-actions"><button class="secondary edit">এডিট</button><button class="danger delete">ডিলিট</button></div>`:""}</div>`;
+  if(isAdmin){card.querySelector(".edit").onclick=()=>openProductEditor(p);card.querySelector(".delete").onclick=()=>removeProduct(p)}
+  $("products").appendChild(card);
+ });
+}
+function escapeHtml(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function escapeAttr(s){return escapeHtml(s)}
+async function startListeners(){
+ if(unsubProducts)unsubProducts();if(unsubCats)unsubCats();
+ if(!configured){products=sampleProducts;categories=sampleCats;renderCategories();renderProducts();return}
+ unsubCats=onSnapshot(query(collection(db,"categories"),orderBy("nameEn")),snap=>{categories=snap.docs.map(d=>({id:d.id,...d.data()}));renderCategories();renderProducts()},e=>showStatus("Category read error: "+e.message));
+ unsubProducts=onSnapshot(query(collection(db,"products"),orderBy("createdAt","desc")),snap=>{products=snap.docs.map(d=>({id:d.id,...d.data()}));renderProducts()},e=>showStatus("Product read error: "+e.message));
+}
+async function refreshRole(user){
+ currentUser=user;isAdmin=false;
+ if(user){try{const token=await user.getIdTokenResult(true);isAdmin=token.claims.admin===true}catch(e){console.warn(e)}}
+ $("adminAdd").classList.toggle("hidden",!isAdmin);$("adminCats").classList.toggle("hidden",!isAdmin);
+ setLang();await startListeners();
+}
+function openProductEditor(p=null){
+ if(!isAdmin){showStatus(t("শুধু Admin পণ্য পরিবর্তন করতে পারবে।","Only admins can manage products."));return}
+ editId=p?.id||null;editImageUrl=p?.imageUrl||"";
+ $("productModalTitle").textContent=p?t("পণ্য এডিট","Edit product"):t("নতুন পণ্য যোগ","Add product");
+ $("pNameBn").value=p?.nameBn||"";$("pNameEn").value=p?.nameEn||"";$("pPrice").value=p?.price??"";$("pDescription").value=p?.description||"";$("pImage").value="";
+ if(p?.categoryId)$("pCategory").value=p.categoryId;
+ $("productNotice").classList.add("hidden");showModal("productModal")
+}
+async function saveProduct(){
+ if(!isAdmin||!configured)return;
+ const nameBn=$("pNameBn").value.trim(),nameEn=$("pNameEn").value.trim(),price=Number($("pPrice").value),categoryId=$("pCategory").value,file=$("pImage").files[0];
+ if((!nameBn&&!nameEn)||!Number.isFinite(price)||price<0||!categoryId){$("productNotice").textContent=t("নাম, সঠিক দাম ও ক্যাটাগরি দিন।","Enter a name, valid price, and category.");$("productNotice").classList.remove("hidden");return}
+ $("productSave").disabled=true;
+ try{
+  let imageUrl=editImageUrl;
+  if(file){const path=`products/${currentUser.uid}/${Date.now()}_${file.name.replace(/[^a-zA-Z0-9._-]/g,"_")}`;const r=ref(storage,path);await uploadBytes(r,file);imageUrl=await getDownloadURL(r)}
+  const cat=categories.find(c=>c.id===categoryId);
+  const data={nameBn,nameEn,price,categoryId,categoryName:cat?categoryName(cat):"",description:$("pDescription").value.trim(),imageUrl,updatedAt:serverTimestamp()};
+  if(editId)await updateDoc(doc(db,"products",editId),data);else await addDoc(collection(db,"products"),{...data,createdAt:serverTimestamp(),createdBy:currentUser.uid});
+  hideModal("productModal");
+ }catch(e){$("productNotice").textContent=e.message;$("productNotice").classList.remove("hidden")}finally{$("productSave").disabled=false}
+}
+async function removeProduct(p){if(!isAdmin||!confirm(t("এই পণ্যটি ডিলিট করবেন?","Delete this product?")))return;try{await deleteDoc(doc(db,"products",p.id));}catch(e){showStatus(e.message)}}
+async function openCategories(){if(!isAdmin)return;renderCategoryAdmin();showModal("categoryModal")}
+function renderCategoryAdmin(){$("categoryList").innerHTML=categories.map(c=>`<div style="display:flex;justify-content:space-between;gap:10px;padding:9px 0;border-bottom:1px solid #333"><span>${escapeHtml(c.nameBn)} / ${escapeHtml(c.nameEn)}</span><button class="danger" data-id="${c.id}" style="padding:6px 9px">Delete</button></div>`).join("");$("categoryList").querySelectorAll("button").forEach(b=>b.onclick=async()=>{if(!confirm("Delete category? Products in this category should be moved first."))return;try{await deleteDoc(doc(db,"categories",b.dataset.id))}catch(e){showStatus(e.message)}})}
+async function addCategory(){if(!isAdmin||!configured)return;const nameBn=$("catBn").value.trim(),nameEn=$("catEn").value.trim();if(!nameBn&&!nameEn)return;try{await addDoc(collection(db,"categories"),{nameBn,nameEn,createdAt:serverTimestamp(),createdBy:currentUser.uid});$("catBn").value="";$("catEn").value="";renderCategoryAdmin()}catch(e){showStatus(e.message)}}
+
+$("langBtn").onclick=()=>{lang=lang==="bn"?"en":"bn";localStorage.setItem("fm_lang",lang);setLang()};
+$("loginBtn").onclick=()=>showModal("authModal");$("heroLogin").onclick=()=>currentUser?renderProducts():showModal("authModal");
+$("logoutBtn").onclick=()=>configured?signOut(auth):alert("Firebase setup required");
+$("authCancel").onclick=()=>hideModal("authModal");$("toggleRegister").onclick=()=>{registerMode=!registerMode;setLang()};
+$("authSubmit").onclick=async()=>{if(!configured){$("authNotice").textContent="Firebase config যোগ করা হয়নি। README.md-এর নির্দেশনা অনুসরণ করুন।";return}const email=$("authEmail").value.trim(),password=$("authPassword").value;if(!email||!password){$("authNotice").textContent=t("ইমেইল ও পাসওয়ার্ড দিন।","Enter email and password.");return}try{if(registerMode)await createUserWithEmailAndPassword(auth,email,password);else await signInWithEmailAndPassword(auth,email,password);hideModal("authModal")}catch(e){$("authNotice").textContent=e.message}};
+$("adminAdd").onclick=()=>openProductEditor();$("adminCats").onclick=openCategories;
+$("productCancel").onclick=()=>hideModal("productModal");$("productSave").onclick=saveProduct;
+$("categoryCancel").onclick=()=>hideModal("categoryModal");$("categorySave").onclick=addCategory;
+$("search").addEventListener("input",renderProducts);$("categoryFilter").addEventListener("change",()=>{document.querySelectorAll(".chip").forEach(x=>x.classList.remove("active"));renderProducts()});
+$("year").textContent=new Date().getFullYear();
+if(configured){onAuthStateChanged(auth,user=>refreshRole(user))}else{currentUser=null;categories=sampleCats;products=sampleProducts;setLang();showStatus("Preview mode: Firebase setup করলে login, upload এবং online sync চালু হবে।")}
+</script>
+</body>
+</html>

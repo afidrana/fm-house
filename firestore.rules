@@ -1,0 +1,26 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() { return request.auth != null; }
+    function isAdmin() { return signedIn() && request.auth.token.admin == true; }
+
+    match /products/{productId} {
+      allow read: if signedIn();
+      allow create: if isAdmin()
+        && request.resource.data.keys().hasAll(['nameBn','nameEn','price','categoryId','imageUrl','createdBy'])
+        && request.resource.data.price is number
+        && request.resource.data.price >= 0;
+      allow update: if isAdmin()
+        && request.resource.data.price is number
+        && request.resource.data.price >= 0;
+      allow delete: if isAdmin();
+    }
+
+    match /categories/{categoryId} {
+      allow read: if signedIn();
+      allow create: if isAdmin()
+        && request.resource.data.keys().hasAll(['nameBn','nameEn']);
+      allow update, delete: if isAdmin();
+    }
+  }
+}
